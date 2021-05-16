@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--  Caching Content Store -->
+    <bean id="fileContentStore" class="org.alfresco.repo.content.caching.CachingContentStore" init-method="init">
+        <property name="backingStore" ref="redpill.defaultS3ContentStore"/>
+        <property name="cache" ref="redpill.defaultS3ContentCache"/>
+        <property name="cacheOnInbound" value="${system.content.caching.cacheOnInbound}"/>
+        <property name="quota" ref="redpill.defaultS3QuotaManager" />
+    </bean>
+</beans>
