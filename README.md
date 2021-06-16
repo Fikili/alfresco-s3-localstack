@@ -19,3 +19,37 @@ Using LocalStack all developers can test a source code it doesn't require AWS ac
 - "For fun part": Add SDK5 (out-of-process) project that will simulate behaviours and move content to different locations
 ## Things to remember
 **This is PoC project. Using that in PROD is on your own risk.**
+## Hackathon result in one sentence
+- It's possible to use [Alfresco S3 Adapter](https://github.com/Redpill-Linpro/alfresco-s3-adapter) with [LocalStack](https://github.com/localstack/localstack/blob/master/README.md)
+## How to run the project in more detailed description 
+- Build alfresco-s3-adapter project - It is used as library for communication with AWS 
+  - `$ git clone https://github.com/Redpill-Linpro/alfresco-s3-adapter.git`
+  - `$ mvn clean install -DskipTests`
+    - Or use [Maven artifactory](https://maven.redpill-linpro.com/nexus/content/repositories/public/org/redpill-linpro/alfresco/s3/) provided by Redpill-Linpro
+- Install the latest versions of Docker + Docker Compose + AWS CLI 2
+- Clone LocalStack project and run required services
+  - `$ git clone https://github.com/localstack/localstack.git`
+  - Update SERVICES to use just S3 + set UI port to different than 8080 + TMPDIR
+    - `$ TMPDIR=/tmp PORT_WEB_UI=9999 SERVICES=s3 docker-compose up -d`
+    - If everything is OK, you should see `localstack_main | Ready.`
+- Create profile for AWS localstack user
+  - `$ aws configure --profile localstack`
+- Create S3 bucket in LocalStack
+  - `$ aws s3api --endpoint-url http://localhost:4566 create-bucket --bucket my-bucket --region eu-central-1 --profile localstack`
+  - As result, you should see `{"Location": "/my-bucket"}`
+- Configure Alfresco to use LocalStack in alfresco-global.properties
+  - aws.accessKey=123 # AFAIK, it is not used but usually it should correspond to AWS credentials 
+  - aws.secretKey=123456 # Same as above
+  - aws.regionName= # If empty, default is US-EAST-1
+  - aws.s3.bucketName=my-bucket # Name corresponds to bucket name that was created in LocalStack
+  - aws.s3.endpoint=http://XXX.XXX.XXX.XXX:4566 # Change XXX by proper IP address where LocalStack is running
+  - aws.s3.rootDirectory=/alfresco/contentstore # Root folder for Alfresco content in S3 bucket. If missing, it is created automatically.
+- Verification that content is in S3 bucket provided by LocalStack
+  - Start Alfresco SDK and see that files are stored in LocalStack
+    - `$ aws s3 --endpoint-url http://XXX.XXX.XXX.XXX:4566 ls --recursive s3://my-bucket --profile localstack`
+    - Expected result:
+    ```
+    2021-06-16 13:17:47      20964 alfresco/contentstore/2021/6/16/17/17/00369794-aef6-4203-b40b-e4d047b0c9ae.bin
+    2021-06-16 13:17:47      74240 alfresco/contentstore/2021/6/16/17/17/003f93ec-2c2a-43ef-876e-fe044e52c513.bin
+    ...
+    ```
