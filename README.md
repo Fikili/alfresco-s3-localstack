@@ -20,7 +20,7 @@ Using LocalStack all developers can test a source code it doesn't require AWS ac
 ## Things to remember
 **This is PoC project. Using that in PROD is on your own risk.**
 ## Hackathon result in one sentence
-- It's possible to use [Alfresco S3 Adapter](https://github.com/Redpill-Linpro/alfresco-s3-adapter) with [LocalStack](https://github.com/localstack/localstack/blob/master/README.md)
+- It's possible to use [Alfresco S3 Adapter](https://github.com/Redpill-Linpro/alfresco-s3-adapter) with [LocalStack](https://github.com/localstack/localstack/blob/master/README.md) :-)
 ## How to run the project in more detailed description 
 - Build alfresco-s3-adapter project - It is used as library for communication with AWS 
   - `$ git clone https://github.com/Redpill-Linpro/alfresco-s3-adapter.git`
