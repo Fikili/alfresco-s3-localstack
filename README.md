@@ -12,7 +12,7 @@ Using LocalStack all developers can test a source code it doesn't require AWS ac
 - Add common dependencies:
   - [OOTBee Support Tools](https://github.com/OrderOfTheBee/ootbee-support-tools)
   - [Javascript Console](https://github.com/share-extras/js-console)
-- Adding community project for integration with AWS S3:
+- Adding community project for integration with "real" AWS S3:
   - [Alfresco S3 Adapter](https://github.com/Redpill-Linpro/alfresco-s3-adapter)
   - Configure AWS credentials for testing -> If OK, continue with next step
 - Configure LocalStack to work with mocked S3 storage  
